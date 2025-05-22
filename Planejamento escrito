@@ -1,0 +1,132 @@
+1. Visão Geral
+Tecnologias Utilizadas: Python 3.10+
+
+
+Modo de Execução: Console (modo texto), com futura possibilidade de extensão para interface gráfica (Tkinter ou Pygame).
+
+
+Descrição: Implementação modular do clássico jogo da Forca, com foco educacional, uso de boas práticas de programação, separação de responsabilidades e suporte a persistência de dados.
+
+
+Objetivo: Desenvolver uma versão sólida e expansível da Forca com:
+
+
+Banco de palavras externo;
+
+
+Sistema de pontuação e histórico de partidas;
+
+
+Dificuldades e desafios opcionais;
+
+
+Potencial migração para interface visual nas etapas finais do curso.
+
+
+2. Descrição do Projeto
+2.1 O que é o Jogo da Forca?
+O jogo da Forca é um jogo de adivinhação de palavras. O jogador tenta adivinhar uma palavra oculta letra por letra. A cada erro, uma parte de um "bonequinho" é desenhada na forca. O objetivo é descobrir a palavra antes que o desenho seja completado.
+Curiosidade: O jogo da Forca é uma excelente ferramenta para reforçar vocabulário e ortografia, especialmente em ambientes educacionais.
+
+3. Funcionalidades Planejadas
+3.1 Lógica de Jogo
+Seleção de palavras: aleatória, de um arquivo .txt com categorias organizadas.
+
+
+Checagem de letras: validação se já foram tentadas, acertos e erros.
+
+
+Sistema de tentativas: decremento a cada erro com limite padrão (6 chances).
+
+
+Verificação de vitória/derrota: fim de jogo com mensagens e resultado.
+
+
+ 3.2 Interface de Console
+Representação visual do boneco da forca via arte ASCII.
+
+
+Exibição da palavra oculta com espaços preenchidos por _.
+
+
+Listagem de letras já tentadas (organizadas por ordem alfabética).
+
+
+Pontuação atual e feedback instantâneo sobre erros/acertos.
+
+
+3.3 Funcionalidades Extras (opcional)
+Sistema de pontuação: pontos por vitória, desconto por derrota.
+
+
+Histórico de partidas: armazenado em .json com data/hora e desempenho.
+
+
+Modos de dificuldade:
+
+
+Fácil: palavras com 4-6 letras.
+
+
+Médio: 7-9 letras.
+
+
+Difícil: 10+ letras ou termos técnicos.
+
+
+Palavras por categoria: animais, objetos, profissões etc.
+
+
+Modo aleatório ou escolha de categoria.
+
+
+
+4. Arquitetura do Código
+
+hangman/
+├── main.py              # Ponto de entrada do jogo
+├── game.py              # Lógica principal: tentativas, verificações, estados
+├── words.py             # Leitura e seleção de palavras (por categoria ou dificuldade)
+├── display.py           # Exibição da forca e informações no console (ASCII)
+└── utils/
+    ├── scores.py        # Leitura/escrita de pontuação em arquivo
+    └── logger.py        # Registro de sessões e erros (opcional)
+
+
+5. Etapas de Entrega (Cronograma Detalhado)
+
+Etapa
+Descrição
+Duração Estimada
+1. Estrutura Inicial
+Ambiente, esqueleto de arquivos, lógica básica (tentativas, acertos/erros)
+Semana 1-2
+2. Banco de Palavras e Exibição
+Leitura de palavras de .txt, exibição do boneco em ASCII, feedback de letras
+Semana 3-4
+3. Recursos Avançados
+Pontuação, histórico, níveis de dificuldade, categorias, persistência em .json
+Semana 5-6
+4. Testes e Finalização
+Testes, validação de fluxo, refatorações e documentação
+Semana 7-8
+5. Interface (extra)
+Início da migração para interface gráfica com Tkinter ou Pygame (extra opcional)
+Semana 9+
+
+
+6. Requisitos Técnicos
+6.1 Python
+Python 3.10+
+
+
+Dependências: nenhuma obrigatória (uso apenas da biblioteca padrão)
+
+
+6.2 Arquivos externos
+palavras.txt: banco de palavras com categorias e dificuldade.
+
+
+pontuacoes.json: histórico de partidas (caso a persistência seja implementada).
+
+
