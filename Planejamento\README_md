@@ -55,11 +55,11 @@ hangman/
 
 | Etapa                  | Descrição                                                | Duração Estimada |
 |------------------------|----------------------------------------------------------|------------------|
-| 1. Estrutura Inicial    | Setup do ambiente, interface básica com Tkinter e lógica | Semana 1-2       |
-| 2. Banco de Palavras e Interface Gráfica | Integração de palavras, canvas e feedback visual    | Semana 3-4       |
-| 3. Funcionalidades Avançadas | Pontuação, histórico, níveis de dificuldade, persistência | Semana 5-6       |
-| 4. Testes e Finalização | Testes completos, refatoração e documentação             | Semana 7-8       |
-| 5. Extensão Interface   | Possível migração ou acréscimo de outras interfaces (Pygame) | Semana 9+        |
+| 1. Estrutura Inicial    | Setup do ambiente, interface básica com Tkinter e lógica | 
+| 2. Banco de Palavras e Interface Gráfica | Integração de palavras, canvas e feedback visual  
+| 3. Funcionalidades Avançadas | Pontuação, histórico, níveis de dificuldade, persistência 
+| 4. Testes e Finalização | Testes completos, refatoração e documentação            
+| 5. Extensão Interface   | Possível migração ou acréscimo de outras interfaces (Pygame) 
 
 ## 6. Requisitos Técnicos  
 
@@ -78,7 +78,3 @@ hangman/
 - Classe App: Gerencia a troca de telas e inicialização da aplicação;  
 - Uso de canvas para desenho do cenário e forca com partes desenhadas progressivamente conforme erros;  
 - Mensagens de feedback atualizadas dinamicamente e controle de estado da entrada para bloquear após fim do jogo.
-
----
-
-Se quiser, posso ajudar a modularizar este código, incluir a leitura de arquivos externos ou preparar o histórico de partidas para próximos passos! Quer ajuda nisso?
