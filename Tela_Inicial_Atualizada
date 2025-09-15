@@ -1,0 +1,199 @@
+import tkinter as tk
+import random
+
+
+class TelaInicial(tk.Frame):
+    def __init__(self, master, ir_dificuldade_callback):
+        super().__init__(master, bg="#87CEEB")
+        self.ir_dificuldade_callback = ir_dificuldade_callback
+        self.pack(fill="both", expand=True)
+        self.criar_widgets()
+
+    def criar_widgets(self):
+        tk.Label(self, text="🎮 Jogo da Forca", font=("Arial", 24), bg="#87CEEB").pack(pady=40)
+        tk.Button(self, text="Jogar", font=("Arial", 18), command=self.ir_dificuldade_callback).pack(pady=20)
+
+
+class TelaDificuldade(tk.Frame):
+    def __init__(self, master, iniciar_callback):
+        super().__init__(master, bg="#87CEEB")
+        self.iniciar_callback = iniciar_callback
+        self.pack(fill="both", expand=True)
+        self.criar_widgets()
+
+    def criar_widgets(self):
+        tk.Label(self, text="Selecione a Dificuldade", font=("Arial", 22), bg="#87CEEB").pack(pady=30)
+
+        tk.Button(self, text="Fácil (3-7 letras)", font=("Arial", 16),
+                  command=lambda: self.iniciar_callback("facil")).pack(pady=10)
+
+        tk.Button(self, text="Médio (8-15 letras)", font=("Arial", 16),
+                  command=lambda: self.iniciar_callback("medio")).pack(pady=10)
+
+        tk.Button(self, text="Difícil (16-35 letras)", font=("Arial", 16),
+                  command=lambda: self.iniciar_callback("dificil")).pack(pady=10)
+
+        tk.Button(self, text="Voltar", font=("Arial", 16),
+                  command=self.voltar).pack(pady=20)
+
+        tk.Button(self, text="Fechar", font=("Arial", 16),
+                  command=self.master.destroy).pack(pady=10)  # fecha o app todo
+
+    def voltar(self):
+        self.master.mostrar_tela_inicial()
+
+
+class TelaJogo(tk.Frame):
+    def __init__(self, master, dificuldade):
+        super().__init__(master, bg="#87CEEB")
+        self.dificuldade = dificuldade
+        self.palavras = [
+            "gato", "computador", "python", "programacao", "dificuldade", "desenvolvimento",
+            "extraordinario", "hipopotomonstrosesquipedaliofobia", "elefante", "janela", "telefone"
+        ]
+        self.palavra = self.sortear_palavra()
+        self.letras_descobertas = ["_" for _ in self.palavra]
+
+        # Tentativas de acordo com a dificuldade
+        if self.dificuldade == "facil":
+            self.tentativas = 6
+        elif self.dificuldade == "medio":
+            self.tentativas = 10
+        else:
+            self.tentativas = 15
+
+        self.letras_tentadas = []
+        self.pack(fill="both", expand=True)
+        self.criar_widgets()
+
+    def sortear_palavra(self):
+        if self.dificuldade == "facil":
+            palavras = [p for p in self.palavras if 3 <= len(p) <= 7]
+        elif self.dificuldade == "medio":
+            palavras = [p for p in self.palavras if 8 <= len(p) <= 15]
+        else:
+            palavras = [p for p in self.palavras if 16 <= len(p) <= 35]
+
+        if not palavras:
+            palavras = ["hipopotomonstrosesquipedaliofobia"]
+        return random.choice(palavras)
+
+    def criar_widgets(self):
+        tk.Label(self, text="Jogo da Forca", font=("Arial", 20), bg="#87CEEB").pack(pady=10)
+
+        self.canvas = tk.Canvas(self, width=200, height=200, bg="white")
+        self.canvas.pack(pady=10)
+        self.desenhar_forca()
+
+        self.lbl_palavra = tk.Label(self, text=" ".join(self.letras_descobertas),
+                                    font=("Arial", 24), bg="#87CEEB")
+        self.lbl_palavra.pack(pady=20)
+
+        self.lbl_info = tk.Label(self, text=f"Tentativas restantes: {self.tentativas}",
+                                 font=("Arial", 14), bg="#87CEEB")
+        self.lbl_info.pack()
+
+        # Novo: mostra letras já tentadas
+        self.lbl_letras = tk.Label(self, text="Letras usadas: ", font=("Arial", 12), bg="#87CEEB")
+        self.lbl_letras.pack(pady=5)
+
+        self.letras_frame = tk.Frame(self, bg="#87CEEB")
+        self.letras_frame.pack(pady=20)
+        self.criar_botoes_letras()
+
+        tk.Button(self, text="Voltar ao Menu", font=("Arial", 14),
+                  command=self.master.mostrar_tela_inicial).pack(pady=10)
+
+        tk.Button(self, text="Fechar", font=("Arial", 14),
+                  command=self.master.destroy).pack(pady=5)  # agora fecha o jogo todo
+
+    def criar_botoes_letras(self):
+        alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        for i, letra in enumerate(alfabeto):
+            btn = tk.Button(self.letras_frame, text=letra, width=4,
+                            command=lambda l=letra: self.tentar_letra(l))
+            btn.grid(row=i // 9, column=i % 9, padx=2, pady=2)
+
+    def tentar_letra(self, letra):
+        letra = letra.lower()
+        if letra in self.letras_tentadas:
+            return
+        self.letras_tentadas.append(letra)
+
+        if letra in self.palavra:
+            for i, l in enumerate(self.palavra):
+                if l == letra:
+                    self.letras_descobertas[i] = letra
+        else:
+            self.tentativas -= 1
+
+        # Atualiza a lista de letras usadas
+        self.lbl_letras.config(text=f"Letras usadas: {', '.join(self.letras_tentadas)}")
+
+        self.atualizar_tela()
+
+    def atualizar_tela(self):
+        self.lbl_palavra.config(text=" ".join(self.letras_descobertas))
+        self.lbl_info.config(text=f"Tentativas restantes: {self.tentativas}")
+        self.desenhar_forca()
+
+        if "_" not in self.letras_descobertas:
+            self.fim_jogo(True)
+        elif self.tentativas == 0:
+            self.fim_jogo(False)
+
+    def desenhar_forca(self):
+        self.canvas.delete("all")
+        self.canvas.create_line(50, 180, 150, 180)
+        self.canvas.create_line(100, 180, 100, 20)
+        self.canvas.create_line(100, 20, 150, 20)
+        self.canvas.create_line(150, 20, 150, 40)
+
+        partes = [
+            lambda: self.canvas.create_oval(130, 40, 170, 80),
+            lambda: self.canvas.create_line(150, 80, 150, 130),
+            lambda: self.canvas.create_line(150, 90, 130, 110),
+            lambda: self.canvas.create_line(150, 90, 170, 110),
+            lambda: self.canvas.create_line(150, 130, 130, 160),
+            lambda: self.canvas.create_line(150, 130, 170, 160),
+        ]
+        erros = (6 if self.dificuldade == "facil" else
+                 10 if self.dificuldade == "medio" else 15) - self.tentativas
+        for i in range(min(erros, len(partes))):
+            partes[i]()
+
+    def fim_jogo(self, venceu):
+        msg = "Você venceu! 🎉" if venceu else f"Você perdeu! 😢\nA palavra era: {self.palavra}"
+        self.lbl_info.config(text=msg)
+        for widget in self.letras_frame.winfo_children():
+            widget.config(state="disabled")
+
+
+class JogoDaForca(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Jogo da Forca")
+        self.geometry("500x600")
+        self.tela_atual = None
+        self.mostrar_tela_inicial()
+
+    def limpar_tela(self):
+        if self.tela_atual is not None:
+            self.tela_atual.destroy()
+
+    def mostrar_tela_inicial(self):
+        self.limpar_tela()
+        self.tela_atual = TelaInicial(self, self.mostrar_tela_dificuldade)
+
+    def mostrar_tela_dificuldade(self):
+        self.limpar_tela()
+        self.tela_atual = TelaDificuldade(self, self.mostrar_tela_jogo)
+
+    def mostrar_tela_jogo(self, dificuldade):
+        self.limpar_tela()
+        self.tela_atual = TelaJogo(self, dificuldade)
+
+
+if __name__ == "__main__":
+    app = JogoDaForca()
+    app.mainloop()
