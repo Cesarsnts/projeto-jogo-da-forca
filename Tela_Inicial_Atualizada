@@ -54,13 +54,12 @@ class TelaJogo(tk.Frame):
         self.palavra = self.sortear_palavra()
         self.letras_descobertas = ["_" for _ in self.palavra]
 
-        # Tentativas de acordo com a dificuldade
         if self.dificuldade == "facil":
             self.tentativas = 6
         elif self.dificuldade == "medio":
-            self.tentativas = 10
+            self.tentativas = 6
         else:
-            self.tentativas = 15
+            self.tentativas = 6
 
         self.letras_tentadas = []
         self.pack(fill="both", expand=True)
@@ -72,7 +71,7 @@ class TelaJogo(tk.Frame):
         elif self.dificuldade == "medio":
             palavras = [p for p in self.palavras if 8 <= len(p) <= 15]
         else:
-            palavras = [p for p in self.palavras if 16 <= len(p) <= 35]
+            palavras = [p for p in self.palavras if 16 <= len(p) <= 40]
 
         if not palavras:
             palavras = ["hipopotomonstrosesquipedaliofobia"]
@@ -93,7 +92,7 @@ class TelaJogo(tk.Frame):
                                  font=("Arial", 14), bg="#87CEEB")
         self.lbl_info.pack()
 
-        # Novo: mostra letras já tentadas
+        # mostra letras já tentadas
         self.lbl_letras = tk.Label(self, text="Letras usadas: ", font=("Arial", 12), bg="#87CEEB")
         self.lbl_letras.pack(pady=5)
 
@@ -105,7 +104,7 @@ class TelaJogo(tk.Frame):
                   command=self.master.mostrar_tela_inicial).pack(pady=10)
 
         tk.Button(self, text="Fechar", font=("Arial", 14),
-                  command=self.master.destroy).pack(pady=5)  # agora fecha o jogo todo
+                  command=self.master.destroy).pack(pady=5)  
 
     def criar_botoes_letras(self):
         alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
