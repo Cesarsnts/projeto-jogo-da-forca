@@ -26,11 +26,10 @@ Curiosidade: Reforça vocabulário e ortografia, sendo útil no ensino.
 - Lista interna de palavras (exemplo: GATO, BOLA, SOL, etc);  
 - Entrada para letras com validação;  
 - Contagem de tentativas restantes;  
-- Mensagens de feedback: acerto, erro, vitória e derrota;  
-- Desenho progressivo da forca em seis etapas;  
+- Mensagens de feedback: acerto, erro, vitória e derrota;    
 - Desenho adicional do cenário (grama, sol com raios).
 
-### 3.2 Funcionalidades Planejadas  
+### 3.2 Funcionalidades Planejadas (Não foi aplicado)
 - Banco de palavras externo com categorias e dificuldades;  
 - Sistema de pontuação e histórico de partidas;  
 - Modos de dificuldade (fácil, médio, difícil);  
@@ -53,9 +52,9 @@ hangman/
 
 ## 5. Etapas de Entrega (Cronograma Atualizado)  
 
-| Etapa                  | Descrição                                                | Duração Estimada |
-|------------------------|----------------------------------------------------------|------------------|
-| 1. Estrutura Inicial    | Setup do ambiente, interface básica com Tkinter e lógica | 
+| Etapa                  | Descrição                                                
+|------------------------|----------------------------------------------------------|
+| 1. Estrutura Inicial    | Setup do ambiente, interface básica com Tkinter e lógica 
 | 2. Banco de Palavras e Interface Gráfica | Integração de palavras, canvas e feedback visual  
 | 3. Funcionalidades Avançadas | Pontuação, histórico, níveis de dificuldade, persistência 
 | 4. Testes e Finalização | Testes completos, refatoração e documentação            
@@ -76,5 +75,5 @@ hangman/
 - Classe TelaInicial: Tela inicial com título e botão para iniciar o jogo;  
 - Classe TelaJogo: Gerencia a lógica da partida, seleção aleatória de palavra, tratamento das tentativas, desenhos no canvas (forca + cenário), e interface de entrada de letras;  
 - Classe App: Gerencia a troca de telas e inicialização da aplicação;  
-- Uso de canvas para desenho do cenário e forca com partes desenhadas progressivamente conforme erros;  
+- Uso de canva para desenho do cenário e forca com partes desenhadas progressivamente conforme erros;  
 - Mensagens de feedback atualizadas dinamicamente e controle de estado da entrada para bloquear após fim do jogo.
