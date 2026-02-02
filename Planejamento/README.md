@@ -1,4 +1,3 @@
-# Jogo da Forca
 
 ## 1. Visão Geral  
 Tecnologias Utilizadas: Python 3.10+  
