@@ -1,4 +1,5 @@
 import random
+from enum import Enum
 
 ATTEMPTS_BY_DIFFICULTY = {
     "facil": 6,
@@ -6,8 +7,13 @@ ATTEMPTS_BY_DIFFICULTY = {
     "dificil": 15,
 }
 
+class GuessResult(Enum):
+    CORRECT = "correct"
+    WRONG = "wrong"
+    ALREADY_TRIED = "already_tried"
+    INVALID = "invalid"
+
 class Game:
-    """Lógica do jogo independente da interface."""
     def __init__(self, palavras, dificuldade="facil"):
         self.dificuldade = dificuldade
         self.palavras = palavras
@@ -27,30 +33,34 @@ class Game:
 
         if not candidates:
             candidates = ["hipopotomonstrosesquipedaliofobia"]
+
         return random.choice(candidates)
 
     def guess(self, letra):
         letra = letra.lower()
-        if letra in self.tried_letters or not letra.isalpha() or len(letra) != 1:
-            return None
+
+        if not letra.isalpha() or len(letra) != 1:
+            return GuessResult.INVALID
+
+        if letra in self.tried_letters:
+            return GuessResult.ALREADY_TRIED
+
         self.tried_letters.append(letra)
+
         if letra in self.palavra:
             for i, c in enumerate(self.palavra):
                 if c == letra:
                     self.revealed[i] = letra
-            return True
+            return GuessResult.CORRECT
         else:
             self.attempts_left -= 1
-            return False
+            return GuessResult.WRONG
 
     def is_won(self):
         return "_" not in self.revealed
 
     def is_lost(self):
         return self.attempts_left <= 0
-
-    def errors(self):
-        return self.max_attempts - self.attempts_left
 
     def revealed_word(self):
         return "".join(self.revealed)

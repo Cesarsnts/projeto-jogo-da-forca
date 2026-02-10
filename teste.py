@@ -3,8 +3,6 @@ import os
 from game import Game, GuessResult
 
 
-# ===================== TELA INICIAL (SEM FUNDO) =====================
-
 class TelaInicial(tk.Frame):
     def __init__(self, master, ir_dificuldade_callback):
         super().__init__(master, bg="#ffe0b2")
@@ -38,7 +36,6 @@ class TelaInicial(tk.Frame):
         ).pack(pady=20)
 
 
-# ===================== TELA DIFICULDADE (SEM FUNDO) =====================
 
 class TelaDificuldade(tk.Frame):
     def __init__(self, master, iniciar_callback):
@@ -77,7 +74,6 @@ class TelaDificuldade(tk.Frame):
             ).pack(pady=8)
 
 
-# ===================== TELA DO JOGO (COM FUNDO) =====================
 
 class TelaJogo(tk.Frame):
     def __init__(self, master, dificuldade):
@@ -85,8 +81,11 @@ class TelaJogo(tk.Frame):
         self.master = master
         self.dificuldade = dificuldade
 
-        # FUNDO COM IMAGEM
-        self.bg_image = tk.PhotoImage(file="imagens/fundo.png")
+        # FUNDO COM IMAGEM (CAMINHO SEGURO)
+        base_dir = os.path.dirname(__file__)
+        img_path = os.path.join(base_dir, "imagens", "fundo.png")
+
+        self.bg_image = tk.PhotoImage(file=img_path)
         self.bg_label = tk.Label(self, image=self.bg_image)
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
@@ -101,8 +100,9 @@ class TelaJogo(tk.Frame):
         self.criar_widgets()
 
     def carregar_palavras(self):
-        if os.path.exists("palavras.txt"):
-            with open("palavras.txt", "r", encoding="utf-8") as f:
+        caminho = os.path.join(os.path.dirname(__file__), "palavras.txt")
+        if os.path.exists(caminho):
+            with open(caminho, "r", encoding="utf-8") as f:
                 return [l.strip() for l in f if l.strip()]
         return None
 
@@ -156,7 +156,7 @@ class TelaJogo(tk.Frame):
     def tentar_letra(self, letra, botao):
         resultado = self.game.guess(letra)
 
-        if resultado == GuessResult.INVALID:
+        if resultado in (GuessResult.INVALID, GuessResult.ALREADY_TRIED):
             return
 
         botao.config(state="disabled")
@@ -197,8 +197,6 @@ class TelaJogo(tk.Frame):
             command=self.master.mostrar_tela_dificuldade
         ).place(relx=0.5, rely=0.85, anchor="center")
 
-
-# ===================== JANELA PRINCIPAL =====================
 
 class JogoDaForca(tk.Tk):
     def __init__(self):

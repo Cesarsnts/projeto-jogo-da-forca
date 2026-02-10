@@ -1,9 +1,0 @@
-# Requisitos do projeto Jogo da Forca
-# Não há dependências externas instaladas via pip.
-# Este projeto usa apenas bibliotecas padrão do Python:
-# - tkinter
-# - random
-# - math
-
-# Versão mínima recomendada do Python
-python >= 3.10
